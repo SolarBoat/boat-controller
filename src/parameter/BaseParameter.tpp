@@ -26,7 +26,7 @@ void BaseParameter<T>::set_on_change(void (*fnPtr)()) {
 // Bool
 template<>
 void BaseParameter<bool>::set_value_string(const String *value) {
-    this->value = value->equals("1") || value->equals("true") || value->equals("on");
+    set_value(value->equals("1") || value->equals("true") || value->equals("on"));
 }
 
 template<>
