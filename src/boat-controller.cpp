@@ -1,3 +1,9 @@
+/******************************************************/
+//       THIS IS A GENERATED FILE - DO NOT EDIT       //
+/******************************************************/
+
+#include "Particle.h"
+#line 1 "c:/Users/Tobias/Documents/Projekte/Solarboat/boat-controller/src/boat-controller.ino"
 /*
  * Project boat-controller
  * Description:
@@ -8,6 +14,10 @@
 #include "parameter/BaseParameter.h"
 #include "parameter/NumParameter.h"
 
+void setup();
+void paraChange();
+void loop();
+#line 11 "c:/Users/Tobias/Documents/Projekte/Solarboat/boat-controller/src/boat-controller.ino"
 BaseParameter<bool> para1("Para1", true);
 NumParameter<int> para2("Para2", 42);
 NumParameter<float> para3("Para3", 3.14);
