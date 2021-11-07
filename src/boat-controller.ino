@@ -81,6 +81,12 @@ void handleCommand(char * command) {
             String value = com.substring(index + 1);
             Parameter::set_parameter(&param, &value);
             webSocket.sendTXT("OK");
+        } else if (com.equals("save")) {
+            Parameter::save_all();
+            webSocket.sendTXT("OK");
+        } else if (com.equals("load")) {
+            Parameter::load_all();
+            webSocket.sendTXT("OK");
         }
     }
 }
