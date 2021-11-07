@@ -7,6 +7,9 @@ BaseParameter<T>::BaseParameter(const char *name, T value) : Parameter(name){
 
 template<typename T>
 void BaseParameter<T>::set_value(const T value) {
+    if (this->value == value) {
+        return;
+    }
     this->value = value;
     if(on_change_function) {        
         on_change_function();
