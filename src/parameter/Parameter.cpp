@@ -21,3 +21,7 @@ String Parameter::get_parameter(const String *name) {
         return String("NP");
     }
 }
+
+const std::map<String, Parameter*>* Parameter::get_all_parameters() { 
+    return &parameters;
+}

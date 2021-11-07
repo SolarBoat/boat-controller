@@ -12,6 +12,7 @@ class Parameter {
 
         static void set_parameter(const String *name, const String *value);
         static String get_parameter(const String *name);
+        static const std::map<String, Parameter*>* get_all_parameters();
 
     private:
         static std::map<String, Parameter*> parameters;
