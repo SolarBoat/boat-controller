@@ -7,7 +7,7 @@ template<typename T>
 class NumParameter : public BaseParameter<T> {
     public:
         NumParameter(const char *name, T value, T min, T max);
-        int setValueString(const String *value) override;
+        int setValueString(const String &value) override;
         String getValueString() override;
         int setValue(const T value) override;
     

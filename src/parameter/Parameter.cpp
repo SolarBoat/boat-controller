@@ -7,19 +7,19 @@ Parameter::Parameter(const char *name) {
     parameters.insert(std::pair<String, Parameter*>(String(name), this));
 }
 
-int Parameter::setParameter(const String *name, const String *value) { 
-    auto search = parameters.find(*name);
+int Parameter::setParameter(const String &name, const String &value) { 
+    auto search = parameters.find(name);
     if (search != parameters.end()) {
-        return parameters[*name]->setValueString(value);
+        return parameters[name]->setValueString(value);
     } else {
         return PARAMETER_RCODE_NOT_FOUND;
     }
 }
 
-String Parameter::getParameter(const String *name) { 
-    auto search = parameters.find(*name);
+String Parameter::getParameter(const String &name) { 
+    auto search = parameters.find(name);
     if (search != parameters.end()) {
-        return parameters[*name]->getValueString();
+        return parameters[name]->getValueString();
     } else {
         return String("NP");
     }
@@ -60,7 +60,7 @@ void Parameter::loadAll() {
                 int seperator = text.indexOf(':');
                 String name = text.substring(0, seperator);
                 String value = text.substring(seperator + 1);
-                setParameter(&name, &value);
+                setParameter(name, value);
                 bufferOffset = i + 1;
             }
         }

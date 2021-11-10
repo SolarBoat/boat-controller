@@ -69,7 +69,7 @@ void handleCommand(char * command) {
                     webSocket.sendTXT(text);
                 }
             } else {
-                String value = Parameter::getParameter(&com);
+                String value = Parameter::getParameter(com);
                 com = com + ": " + value;
                 webSocket.sendTXT(com);
             }      
@@ -81,7 +81,7 @@ void handleCommand(char * command) {
             }
             String param = com.substring(0,index);
             String value = com.substring(index + 1);
-            int rcode = Parameter::setParameter(&param, &value);
+            int rcode = Parameter::setParameter(param, value);
             if (rcode == PARAMETER_RCODE_OK) {
                 webSocket.sendTXT("OK");
             } else if (rcode == PARAMETER_RCODE_NOT_FOUND) {

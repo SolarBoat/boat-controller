@@ -28,8 +28,8 @@ void BaseParameter<T>::setOnChange(void (*fnPtr)()) {
 
 // String
 template<>
-int BaseParameter<String>::setValueString(const String *value) {
-    return setValue(*value);
+int BaseParameter<String>::setValueString(const String &value) {
+    return setValue(value);
 }
 
 template<>
@@ -39,10 +39,10 @@ String BaseParameter<String>::getValueString() {
 
 // Bool
 template<>
-int BaseParameter<bool>::setValueString(const String *value) {
-    if (value->equals("1") || value->equals("true") || value->equals("on")) {
+int BaseParameter<bool>::setValueString(const String &value) {
+    if (value.equals("1") || value.equals("true") || value.equals("on")) {
         return setValue(true);
-    } else if (value->equals("0") || value->equals("false") || value->equals("off")) {
+    } else if (value.equals("0") || value.equals("false") || value.equals("off")) {
         return setValue(false);
     } else {
         return PARAMETER_RCODE_INVALID_VALUE;

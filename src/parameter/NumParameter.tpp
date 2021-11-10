@@ -16,16 +16,16 @@ int NumParameter<T>::setValue(const T value) {
 
 // Int
 template<>
-int NumParameter<int>::setValueString(const String *value) {
+int NumParameter<int>::setValueString(const String &value) {
     int i;
-    if (value->charAt(0) == '-') {
-        i = -value->substring(1).toInt();
-        if (i == 0 && value->charAt(1) != '0') {
+    if (value.charAt(0) == '-') {
+        i = -value.substring(1).toInt();
+        if (i == 0 && value.charAt(1) != '0') {
             return PARAMETER_RCODE_INVALID_VALUE;
         }
     } else {
-        i = -value->toInt();
-        if (i == 0 && value->charAt(0) != '0') {
+        i = -value.toInt();
+        if (i == 0 && value.charAt(0) != '0') {
             return PARAMETER_RCODE_INVALID_VALUE;
         }
     }
@@ -39,16 +39,16 @@ String NumParameter<int>::getValueString() {
 
 // Float
 template<>
-int NumParameter<float>::setValueString(const String *value) {
+int NumParameter<float>::setValueString(const String &value) {
     float f;
-    if (value->charAt(0) == '-') {
-        f = -value->substring(1).toFloat();
-        if (f == 0 && value->charAt(1) != '0') {
+    if (value.charAt(0) == '-') {
+        f = -value.substring(1).toFloat();
+        if (f == 0 && value.charAt(1) != '0') {
             return PARAMETER_RCODE_INVALID_VALUE;
         }
     } else {
-        f = value->toFloat();
-        if (f == 0 && value->charAt(0) != '0') {
+        f = value.toFloat();
+        if (f == 0 && value.charAt(0) != '0') {
             return PARAMETER_RCODE_INVALID_VALUE;
         }
     }

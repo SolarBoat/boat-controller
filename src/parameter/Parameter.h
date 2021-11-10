@@ -11,11 +11,11 @@
 class Parameter {
     public:
         Parameter(const char *name);
-        virtual int setValueString(const String *value) = 0;
+        virtual int setValueString(const String &value) = 0;
         virtual String getValueString() = 0;
 
-        static int setParameter(const String *name, const String *value);
-        static String getParameter(const String *name);
+        static int setParameter(const String &name, const String &value);
+        static String getParameter(const String &name);
         static const std::map<String, Parameter*>* getAllParameters();
 
         static void saveAll();

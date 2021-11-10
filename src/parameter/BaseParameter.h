@@ -7,7 +7,7 @@ template<typename T>
 class BaseParameter : public Parameter {
     public:
         BaseParameter(const char *name, T value);
-        int setValueString(const String *value) override;
+        int setValueString(const String &value) override;
         String getValueString() override;
 
         T getValue();
