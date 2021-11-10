@@ -2,6 +2,7 @@
 #include <WebSocketsClient.h>
 #include <map>
 #include "commandParser.h"
+#include "serverLogHandler.h"
 
 #define SERVER_
 
@@ -11,6 +12,9 @@ namespace server {
         const String SERVER_IP = "82.165.125.185";
         const int SERVER_PORT = 80;
         const String WEBSOCKET_URL = "/ws/boat/";
+
+        ServerLogHandler logHandler(LOG_LEVEL_ERROR);
+        Logger log("app.server");
 
         WebSocketsClient webSocket;
 
@@ -22,27 +26,27 @@ namespace server {
             String name = seperator == -1 ? str : str.substring(0, seperator);
             auto command = commandParsers.find(name);
             if (command == commandParsers.end()) {
-                sendText("Command not found");
+                log.error("Command not found: %s", name.c_str());
                 return;
             }
             String params = seperator == -1 ? "" : str.substring(seperator + 1);
             command->second(params);
         }
 
-        void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
+        void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             switch(type) {
                 case WStype_DISCONNECTED:
-                    Serial.printf("[WSc] Disconnected!\n");
+                    log.info("Websocket disconnected.");
                     break;
                 case WStype_CONNECTED:
-                    Serial.printf("[WSc] Connected to url: %s\n",  payload);
+                    log.info("Websocket connected to url: %s", payload);
                     break;
                 case WStype_TEXT:
-                    Serial.printf("[WSc] get text: %s\n", payload);
+                    log.info("Websocket get command: %s", payload);
                     handleCommand((char*)payload);
                     break;
                 case WStype_BIN:
-                    Serial.printf("[WSc] get binary lenght: %u\n", lenght);
+                    log.info("Websocket get binary length: %u", length);
                     break;
             }
         }

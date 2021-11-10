@@ -15,6 +15,8 @@ BaseParameter<String> para2("p-str", "Hello World!");
 NumParameter<int> para3("p-int", 42, -100, 100);
 NumParameter<float> para4("p-float", 3.14, -100, 100);
 
+SerialLogHandler logHandler(LOG_LEVEL_INFO);
+
 // setup() runs once, when the device is first turned on.
 void setup() {
     String str = "test";
@@ -27,11 +29,8 @@ void setup() {
 
     paraChange();
 
-    Serial.println("Connect ...");
-
     server::begin();
 
-    Serial.println("Ready");
 }
 
 void paraChange() {

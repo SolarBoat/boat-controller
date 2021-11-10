@@ -24,7 +24,7 @@ int NumParameter<int>::setValueString(const String &value) {
             return PARAMETER_RCODE_INVALID_VALUE;
         }
     } else {
-        i = -value.toInt();
+        i = value.toInt();
         if (i == 0 && value.charAt(0) != '0') {
             return PARAMETER_RCODE_INVALID_VALUE;
         }
