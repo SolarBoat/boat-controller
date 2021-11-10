@@ -7,42 +7,42 @@ Parameter::Parameter(const char *name) {
     parameters.insert(std::pair<String, Parameter*>(String(name), this));
 }
 
-int Parameter::set_parameter(const String *name, const String *value) { 
+int Parameter::setParameter(const String *name, const String *value) { 
     auto search = parameters.find(*name);
     if (search != parameters.end()) {
-        return parameters[*name]->set_value_string(value);
+        return parameters[*name]->setValueString(value);
     } else {
         return PARAMETER_RCODE_NOT_FOUND;
     }
 }
 
-String Parameter::get_parameter(const String *name) { 
+String Parameter::getParameter(const String *name) { 
     auto search = parameters.find(*name);
     if (search != parameters.end()) {
-        return parameters[*name]->get_value_string();
+        return parameters[*name]->getValueString();
     } else {
         return String("NP");
     }
 }
 
-const std::map<String, Parameter*>* Parameter::get_all_parameters() { 
+const std::map<String, Parameter*>* Parameter::getAllParameters() { 
     return &parameters;
 }
 
-void Parameter::save_all() {
+void Parameter::saveAll() {
     int fd = open("parameter.txt", O_WRONLY | O_CREAT | O_TRUNC);
     if (fd == -1) {
         Serial.println("unable to open file parameters.txt");
         return;
     }
     for(auto it = parameters.begin(); it != parameters.end(); it++) {
-        String text = it->first + ":" + it->second->get_value_string() + "\n";
+        String text = it->first + ":" + it->second->getValueString() + "\n";
         write(fd, text.c_str(), text.length());
     }
     close(fd);
 }
 
-void Parameter::load_all() {
+void Parameter::loadAll() {
     int fd = open("parameter.txt", O_RDONLY);
     if (fd == -1) {
         Serial.println("unable to open file parameters.txt");
@@ -60,7 +60,7 @@ void Parameter::load_all() {
                 int seperator = text.indexOf(':');
                 String name = text.substring(0, seperator);
                 String value = text.substring(seperator + 1);
-                set_parameter(&name, &value);
+                setParameter(&name, &value);
                 bufferOffset = i + 1;
             }
         }

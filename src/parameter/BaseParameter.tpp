@@ -6,7 +6,7 @@ BaseParameter<T>::BaseParameter(const char *name, T value) : Parameter(name){
 }
 
 template<typename T>
-int BaseParameter<T>::set_value(const T value) {
+int BaseParameter<T>::setValue(const T value) {
     if (this->value != value) {
         this->value = value;
         if(on_change_function) {        
@@ -17,40 +17,40 @@ int BaseParameter<T>::set_value(const T value) {
 }
 
 template<typename T>
-T BaseParameter<T>::get_value() {
+T BaseParameter<T>::getValue() {
     return this->value;
 }
 
 template<typename T>
-void BaseParameter<T>::set_on_change(void (*fnPtr)()) {
+void BaseParameter<T>::setOnChange(void (*fnPtr)()) {
     this->on_change_function = fnPtr;
 }
 
 // String
 template<>
-int BaseParameter<String>::set_value_string(const String *value) {
-    return set_value(*value);
+int BaseParameter<String>::setValueString(const String *value) {
+    return setValue(*value);
 }
 
 template<>
-String BaseParameter<String>::get_value_string() {
+String BaseParameter<String>::getValueString() {
     return value;
 }
 
 // Bool
 template<>
-int BaseParameter<bool>::set_value_string(const String *value) {
+int BaseParameter<bool>::setValueString(const String *value) {
     if (value->equals("1") || value->equals("true") || value->equals("on")) {
-        return set_value(true);
+        return setValue(true);
     } else if (value->equals("0") || value->equals("false") || value->equals("off")) {
-        return set_value(false);
+        return setValue(false);
     } else {
         return PARAMETER_RCODE_INVALID_VALUE;
     } 
 }
 
 template<>
-String BaseParameter<bool>::get_value_string() {
+String BaseParameter<bool>::getValueString() {
     if (this->value) {
         return String("true");
     } else {

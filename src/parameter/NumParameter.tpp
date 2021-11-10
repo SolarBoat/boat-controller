@@ -7,16 +7,16 @@ NumParameter<T>::NumParameter(const char *name, T value, T min, T max) : BasePar
 }
 
 template<typename T>
-int NumParameter<T>::set_value(const T value) {
+int NumParameter<T>::setValue(const T value) {
     if (value < minValue || value > maxValue) {
         return PARAMETER_RCODE_INVALID_VALUE;
     }
-    return BaseParameter<T>::set_value(value);
+    return BaseParameter<T>::setValue(value);
 }
 
 // Int
 template<>
-int NumParameter<int>::set_value_string(const String *value) {
+int NumParameter<int>::setValueString(const String *value) {
     int i;
     if (value->charAt(0) == '-') {
         i = -value->substring(1).toInt();
@@ -29,17 +29,17 @@ int NumParameter<int>::set_value_string(const String *value) {
             return PARAMETER_RCODE_INVALID_VALUE;
         }
     }
-    return this->set_value(i);
+    return this->setValue(i);
 }
 
 template<>
-String NumParameter<int>::get_value_string() {
-    return String(this->get_value());
+String NumParameter<int>::getValueString() {
+    return String(this->getValue());
 }
 
 // Float
 template<>
-int NumParameter<float>::set_value_string(const String *value) {
+int NumParameter<float>::setValueString(const String *value) {
     float f;
     if (value->charAt(0) == '-') {
         f = -value->substring(1).toFloat();
@@ -52,10 +52,10 @@ int NumParameter<float>::set_value_string(const String *value) {
             return PARAMETER_RCODE_INVALID_VALUE;
         }
     }
-    return this->set_value(f);
+    return this->setValue(f);
 }
 
 template<>
-String NumParameter<float>::get_value_string() {
-    return String(this->get_value());
+String NumParameter<float>::getValueString() {
+    return String(this->getValue());
 }

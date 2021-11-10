@@ -23,10 +23,10 @@ void setup() {
     String str = "test";
     Serial.begin(115200);
 
-    para1.set_on_change(paraChange);
-    para2.set_on_change(paraChange);
-    para3.set_on_change(paraChange);
-    para4.set_on_change(paraChange);
+    para1.setOnChange(paraChange);
+    para2.setOnChange(paraChange);
+    para3.setOnChange(paraChange);
+    para4.setOnChange(paraChange);
 
     paraChange();
 
@@ -63,13 +63,13 @@ void handleCommand(char * command) {
         if (com.startsWith("get ")) {
             com = com.substring(com.indexOf(' ') + 1);
             if (com.equals("all")) {
-                const std::map<String, Parameter*> *params = Parameter::get_all_parameters();
+                const std::map<String, Parameter*> *params = Parameter::getAllParameters();
                 for(auto it = params->begin(); it != params->end(); it++) {
-                    String text = it->first + ": " + it->second->get_value_string();
+                    String text = it->first + ": " + it->second->getValueString();
                     webSocket.sendTXT(text);
                 }
             } else {
-                String value = Parameter::get_parameter(&com);
+                String value = Parameter::getParameter(&com);
                 com = com + ": " + value;
                 webSocket.sendTXT(com);
             }      
@@ -81,7 +81,7 @@ void handleCommand(char * command) {
             }
             String param = com.substring(0,index);
             String value = com.substring(index + 1);
-            int rcode = Parameter::set_parameter(&param, &value);
+            int rcode = Parameter::setParameter(&param, &value);
             if (rcode == PARAMETER_RCODE_OK) {
                 webSocket.sendTXT("OK");
             } else if (rcode == PARAMETER_RCODE_NOT_FOUND) {
@@ -90,10 +90,10 @@ void handleCommand(char * command) {
                 webSocket.sendTXT("Invalid value");
             }
         } else if (com.equals("save")) {
-            Parameter::save_all();
+            Parameter::saveAll();
             webSocket.sendTXT("OK");
         } else if (com.equals("load")) {
-            Parameter::load_all();
+            Parameter::loadAll();
             webSocket.sendTXT("OK");
         }
     }
@@ -101,11 +101,11 @@ void handleCommand(char * command) {
 
 void paraChange() {
     Serial.println("Parameter Changed:");
-    const std::map<String, Parameter*> *params = Parameter::get_all_parameters();
+    const std::map<String, Parameter*> *params = Parameter::getAllParameters();
     for(auto it = params->begin(); it != params->end(); it++) {
         Serial.print(it->first);
         Serial.print(": ");
-        Serial.println(it->second->get_value_string());
+        Serial.println(it->second->getValueString());
     }
 }
 
