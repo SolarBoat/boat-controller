@@ -7,11 +7,11 @@ template<typename T>
 class BaseParameter : public Parameter {
     public:
         BaseParameter(const char *name, T value);
-        void set_value_string(const String *value) override;
+        int set_value_string(const String *value) override;
         String get_value_string() override;
 
         T get_value();
-        virtual void set_value(const T value);
+        virtual int set_value(const T value);
         void set_on_change(void (*fnPtr)());
     
     private:

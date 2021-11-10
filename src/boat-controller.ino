@@ -14,26 +14,28 @@
 WebSocketsClient webSocket;
 
 BaseParameter<bool> para1("p-bool", true);
-NumParameter<int> para2("p-int", 42);
-NumParameter<float> para3("p-float", 3.14);
+BaseParameter<String> para2("p-str", "Hello World!");
+NumParameter<int> para3("p-int", 42, -100, 100);
+NumParameter<float> para4("p-float", 3.14, -100, 100);
 
 // setup() runs once, when the device is first turned on.
 void setup() {
-  String str = "test";
-  Serial.begin(115200);
+    String str = "test";
+    Serial.begin(115200);
 
-  para1.set_on_change(paraChange);
-  para2.set_on_change(paraChange);
-  para3.set_on_change(paraChange);
+    para1.set_on_change(paraChange);
+    para2.set_on_change(paraChange);
+    para3.set_on_change(paraChange);
+    para4.set_on_change(paraChange);
 
-  paraChange();
+    paraChange();
 
-  Serial.println("Connect ...");
+    Serial.println("Connect ...");
 
-  webSocket.begin("82.165.125.185", 80, "/ws/boat/");
-  webSocket.onEvent(webSocketEvent);
+    webSocket.begin("82.165.125.185", 80, "/ws/boat/");
+    webSocket.onEvent(webSocketEvent);
 
-  Serial.println("Ready");
+    Serial.println("Ready");
 }
 
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
@@ -79,8 +81,14 @@ void handleCommand(char * command) {
             }
             String param = com.substring(0,index);
             String value = com.substring(index + 1);
-            Parameter::set_parameter(&param, &value);
-            webSocket.sendTXT("OK");
+            int rcode = Parameter::set_parameter(&param, &value);
+            if (rcode == PARAMETER_RCODE_OK) {
+                webSocket.sendTXT("OK");
+            } else if (rcode == PARAMETER_RCODE_NOT_FOUND) {
+                webSocket.sendTXT("Parameter not found");
+            } else if (rcode == PARAMETER_RCODE_INVALID_VALUE) {
+                webSocket.sendTXT("Invalid value");
+            }
         } else if (com.equals("save")) {
             Parameter::save_all();
             webSocket.sendTXT("OK");

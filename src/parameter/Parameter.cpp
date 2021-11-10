@@ -7,10 +7,12 @@ Parameter::Parameter(const char *name) {
     parameters.insert(std::pair<String, Parameter*>(String(name), this));
 }
 
-void Parameter::set_parameter(const String *name, const String *value) { 
+int Parameter::set_parameter(const String *name, const String *value) { 
     auto search = parameters.find(*name);
     if (search != parameters.end()) {
-        parameters[*name]->set_value_string(value);
+        return parameters[*name]->set_value_string(value);
+    } else {
+        return PARAMETER_RCODE_NOT_FOUND;
     }
 }
 
