@@ -7,8 +7,8 @@ template<typename T>
 class BaseParameter : public Parameter {
     public:
         BaseParameter(const char *name, T value);
-        int setValueString(const String &value) override;
-        String getValueString() override;
+        int setValueString(const std::string &value) override;
+        std::string getValueString() override;
 
         T getValue();
         virtual int setValue(const T value);

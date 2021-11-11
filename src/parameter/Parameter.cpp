@@ -1,13 +1,18 @@
 #include "Parameter.h"
 #include <fcntl.h>
 
-std::map<String, Parameter*> Parameter::parameters;
-
-Parameter::Parameter(const char *name) {
-    parameters.insert(std::pair<String, Parameter*>(String(name), this));
+std::map<std::string, Parameter*> &Parameter::allParameters() {
+    static std::map<std::string, Parameter*> parameters;
+    return parameters;
 }
 
-int Parameter::setParameter(const String &name, const String &value) { 
+Parameter::Parameter(const char *name) {
+    allParameters().insert(std::pair<std::string, Parameter*>(std::string(name), this));
+    Log.info("Added parameter: %s", name);
+}
+
+int Parameter::setParameter(const std::string &name, const std::string &value) { 
+    std::map<std::string, Parameter*> &parameters = allParameters();
     auto search = parameters.find(name);
     if (search != parameters.end()) {
         return parameters[name]->setValueString(value);
@@ -16,17 +21,18 @@ int Parameter::setParameter(const String &name, const String &value) {
     }
 }
 
-String Parameter::getParameter(const String &name) { 
+std::string Parameter::getParameter(const std::string &name) { 
+    std::map<std::string, Parameter*> &parameters = allParameters();
     auto search = parameters.find(name);
     if (search != parameters.end()) {
         return parameters[name]->getValueString();
     } else {
-        return String("NP");
+        return "NP";
     }
 }
 
-const std::map<String, Parameter*>* Parameter::getAllParameters() { 
-    return &parameters;
+const std::map<std::string, Parameter*>* Parameter::getAllParameters() {
+    return &allParameters();
 }
 
 void Parameter::saveAll() {
@@ -35,8 +41,9 @@ void Parameter::saveAll() {
         Serial.println("unable to open file parameters.txt");
         return;
     }
+    std::map<std::string, Parameter*> &parameters = allParameters();
     for(auto it = parameters.begin(); it != parameters.end(); it++) {
-        String text = it->first + ":" + it->second->getValueString() + "\n";
+        std::string text = it->first + ":" + it->second->getValueString() + "\n";
         write(fd, text.c_str(), text.length());
     }
     close(fd);
@@ -56,10 +63,10 @@ void Parameter::loadAll() {
         for (int i = 0; i < readBytes; i++) {
             if (buffer[i] == '\n') {
                 buffer[i] = 0;
-                String text = String(buffer + bufferOffset);
-                int seperator = text.indexOf(':');
-                String name = text.substring(0, seperator);
-                String value = text.substring(seperator + 1);
+                std::string text = std::string(buffer + bufferOffset);
+                int seperator = text.find(':');
+                std::string name = text.substr(0, seperator);
+                std::string value = text.substr(seperator + 1);
                 setParameter(name, value);
                 bufferOffset = i + 1;
             }

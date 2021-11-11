@@ -28,21 +28,21 @@ void BaseParameter<T>::setOnChange(void (*fnPtr)()) {
 
 // String
 template<>
-int BaseParameter<String>::setValueString(const String &value) {
+int BaseParameter<std::string>::setValueString(const std::string &value) {
     return setValue(value);
 }
 
 template<>
-String BaseParameter<String>::getValueString() {
+std::string BaseParameter<std::string>::getValueString() {
     return value;
 }
 
 // Bool
 template<>
-int BaseParameter<bool>::setValueString(const String &value) {
-    if (value.equals("1") || value.equals("true") || value.equals("on")) {
+int BaseParameter<bool>::setValueString(const std::string &value) {
+    if (value == "1" || value == "true" || value == "on") {
         return setValue(true);
-    } else if (value.equals("0") || value.equals("false") || value.equals("off")) {
+    } else if (value == "0" || value == "false" || value == "off") {
         return setValue(false);
     } else {
         return PARAMETER_RCODE_INVALID_VALUE;
@@ -50,10 +50,10 @@ int BaseParameter<bool>::setValueString(const String &value) {
 }
 
 template<>
-String BaseParameter<bool>::getValueString() {
+std::string BaseParameter<bool>::getValueString() {
     if (this->value) {
-        return String("true");
+        return "true";
     } else {
-        return String("false");
+        return "false";
     }
 }

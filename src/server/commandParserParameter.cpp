@@ -6,30 +6,28 @@ namespace commandParser {
 
     Logger parseParamLog("app.parser.param");
 
-    void parseParameter(const String &params) {
-        Serial.println(params);
-        String com = params;
-        if (com.startsWith("get ")) {
-            com = com.substring(com.indexOf(' ') + 1);
-            if (com.equals("all")) {
-                const std::map<String, Parameter*> *params = Parameter::getAllParameters();
+    void parseParameter(std::string &params) {
+        if (params.rfind("get ", 0) == 0) {
+            params.erase(0, params.find(' ') + 1);
+            if (params == "all") {
+                const std::map<std::string, Parameter*> *params = Parameter::getAllParameters();
                 for(auto it = params->begin(); it != params->end(); it++) {
-                    String text = it->first + ": " + it->second->getValueString();
+                    std::string text = it->first + ": " + it->second->getValueString();
                     server::sendText(text);
                 }
             } else {
-                String value = Parameter::getParameter(com);
-                com = com + ": " + value;
-                server::sendText(com);
+                std::string value = Parameter::getParameter(params);
+                params += ": " + value;
+                server::sendText(params);
             }      
-        } else if (com.startsWith("set ")) {
-            com = com.substring(com.indexOf(' ') + 1);
-            int index = com.indexOf(' ');
-            if (index == -1) {
+        } else if (params.rfind("set ", 0) == 0) {
+            params.erase(0, params.find(' ') + 1);
+            std::size_t index = params.find(' ');
+            if (index == std::string::npos) {
                 return;
             }
-            String param = com.substring(0,index);
-            String value = com.substring(index + 1);
+            std::string param = params.substr(0,index);
+            std::string value = params.substr(index + 1);
             int rcode = Parameter::setParameter(param, value);
             if (rcode == PARAMETER_RCODE_OK) {
                 server::sendText("OK");
@@ -38,10 +36,10 @@ namespace commandParser {
             } else if (rcode == PARAMETER_RCODE_INVALID_VALUE) {
                 parseParamLog.error("Invalid value \"%s\" for parameter \"%s\"", value.c_str(), param.c_str());
             }
-        } else if (com.equals("save")) {
+        } else if (params == "save") {
             Parameter::saveAll();
             server::sendText("OK");
-        } else if (com.equals("load")) {
+        } else if (params == "load") {
             Parameter::loadAll();
             server::sendText("OK");
         }

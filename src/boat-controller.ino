@@ -8,10 +8,11 @@
 #include "parameter/BaseParameter.h"
 #include "parameter/NumParameter.h"
 #include "server/server.h"
+#include <string>
 
 
 BaseParameter<bool> para1("p-bool", true);
-BaseParameter<String> para2("p-str", "Hello World!");
+BaseParameter<std::string> para2("p-str", "Hello World!");
 NumParameter<int> para3("p-int", 42, -100, 100);
 NumParameter<float> para4("p-float", 3.14, -100, 100);
 
@@ -35,11 +36,11 @@ void setup() {
 
 void paraChange() {
     Serial.println("Parameter Changed:");
-    const std::map<String, Parameter*> *params = Parameter::getAllParameters();
+    const std::map<std::string, Parameter*> *params = Parameter::getAllParameters();
     for(auto it = params->begin(); it != params->end(); it++) {
-        Serial.print(it->first);
+        Serial.print(it->first.c_str());
         Serial.print(": ");
-        Serial.println(it->second->getValueString());
+        Serial.println(it->second->getValueString().c_str());
     }
 }
 

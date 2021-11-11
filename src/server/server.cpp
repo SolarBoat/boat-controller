@@ -1,4 +1,5 @@
 #include "server.h"
+#include <Particle.h>
 #include <WebSocketsClient.h>
 #include <map>
 #include "commandParser.h"
@@ -18,18 +19,18 @@ namespace server {
 
         WebSocketsClient webSocket;
 
-        std::map<String,void (*)(const String &command)> commandParsers;
+        std::map<std::string,void (*)(std::string &command)> commandParsers;
 
         void handleCommand(const char *text) {
-            String str(text);
-            int seperator = str.indexOf(' ');
-            String name = seperator == -1 ? str : str.substring(0, seperator);
+            std::string str(text);
+            int seperator = str.find(' ');
+            std::string name = seperator == -1 ? str : str.substr(0, seperator);
             auto command = commandParsers.find(name);
             if (command == commandParsers.end()) {
                 log.error("Command not found: %s", name.c_str());
                 return;
             }
-            String params = seperator == -1 ? "" : str.substring(seperator + 1);
+            std::string params = seperator == -1 ? "" : str.substr(seperator + 1);
             command->second(params);
         }
 
@@ -51,7 +52,7 @@ namespace server {
             }
         }
 
-        void addCommandParser(void (*fnPtr)(const String &params), const String &command) {
+        void addCommandParser(void (*fnPtr)(std::string &params), const std::string &command) {
             commandParsers[command] = fnPtr;
         }
 
@@ -69,8 +70,8 @@ namespace server {
         webSocket.loop();
     }
 
-    void sendText(const String &text) {
-        webSocket.sendTXT(text);
+    void sendText(const std::string &text) {
+        webSocket.sendTXT(text.c_str());
     }
 
     void sendText(const char *text) {

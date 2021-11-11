@@ -1,14 +1,14 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
-#include <Particle.h>
+#include <string>
 
 namespace server {
 
     void begin();
     void loop();
 
-    void sendText(const String &text);
+    void sendText(const std::string &text);
     void sendText(const char *text);
 
 }
