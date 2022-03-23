@@ -6,6 +6,7 @@
 namespace commandParser {
     
     void parseParameter(std::string &params);
+    void parseChannel(std::string &params);
 
 }
 

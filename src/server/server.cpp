@@ -64,6 +64,9 @@ namespace server {
 
         addCommandParser(commandParser::parseParameter, "p");
         addCommandParser(commandParser::parseParameter, "parameter");
+        
+        addCommandParser(commandParser::parseChannel, "c");
+        addCommandParser(commandParser::parseChannel, "channel");
     }
 
     void loop() {
