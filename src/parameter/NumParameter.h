@@ -16,6 +16,4 @@ class NumParameter : public BaseParameter<T> {
         T maxValue;
 };
 
-#include "NumParameter.tpp"
-
 #endif

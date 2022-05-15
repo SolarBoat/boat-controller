@@ -1,5 +1,10 @@
 #include "BaseChannel.h"
 
+template class BaseChannel<std::string>; 
+template class BaseChannel<int>; 
+template class BaseChannel<float>; 
+template class BaseChannel<bool>; 
+
 template<typename T>
 void BaseChannel<T>::setValue(const T &value) {
     this->value = value;
@@ -11,12 +16,17 @@ T BaseChannel<T>::getValue() {
 }
 
 template<typename T>
+int BaseChannel<T>::getLogLevel() {
+    return logLevel;
+}
+
+template<typename T>
 BaseChannel<T>::BaseChannel(const std::string &name) : Channel(name) {
 
 }
 
 template<typename T>
-BaseChannel<T> &BaseChannel<T>::get(const std::string &name) {
+BaseChannel<T>& BaseChannel<T>::get(const std::string &name) {
     Channel *channel = Channel::getChannel(name);
     if (channel != nullptr) {
         return *((BaseChannel<T>*) channel);
@@ -24,6 +34,14 @@ BaseChannel<T> &BaseChannel<T>::get(const std::string &name) {
         return *(new BaseChannel<T>(name));
     }
 }
+
+template<typename T>
+BaseChannel<T>& BaseChannel<T>::get(const std::string &name, int logLevel) {
+    BaseChannel<T>& channel = BaseChannel<T>::get(name);
+    channel.logLevel = logLevel;
+    return channel;
+}
+
 
 // String
 template<>

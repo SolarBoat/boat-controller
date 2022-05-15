@@ -19,6 +19,4 @@ class BaseParameter : public Parameter {
         void (*on_change_function)();
 };
 
-#include "BaseParameter.tpp"
-
 #endif

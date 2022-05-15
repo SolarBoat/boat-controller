@@ -1,5 +1,11 @@
 #include "BaseParameter.h"
 
+template class BaseParameter<std::string>;
+template class BaseParameter<bool>;
+
+template class BaseParameter<int>;
+template class BaseParameter<float>;
+
 template<typename T>
 BaseParameter<T>::BaseParameter(const char *name, T value) : Parameter(name){
     this->value = value;
@@ -24,6 +30,16 @@ T BaseParameter<T>::getValue() {
 template<typename T>
 void BaseParameter<T>::setOnChange(void (*fnPtr)()) {
     this->on_change_function = fnPtr;
+}
+
+template<typename T>
+int BaseParameter<T>::setValueString(const std::string &value) {
+    return 0;
+}
+
+template<typename T>
+std::string BaseParameter<T>::getValueString() {
+    return 0;
 }
 
 // String

@@ -1,5 +1,8 @@
 #include "NumParameter.h"
 
+template class NumParameter<int>;
+template class NumParameter<float>;
+
 template<typename T>
 NumParameter<T>::NumParameter(const char *name, T value, T min, T max) : BaseParameter<T>(name, value){
     minValue = min;
